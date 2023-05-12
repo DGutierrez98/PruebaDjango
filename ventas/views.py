@@ -59,7 +59,7 @@ class ProductosView(View):
         return render(request, self.template_name, self.context)
 
     def post(self, request):
-        nombre = request.POST.get('nombre')
+        nombre = request.POST.get('nombresasda')
         descripcion = request.POST.get('descripcion')
         precio = request.POST.get('precio')
         
