@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ventas.models import productos
+from ventas.models import Productos
 
 # Register your models here.
-admin.site.register(productos)
+admin.site.register(Productos)
