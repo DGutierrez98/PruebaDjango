@@ -8,7 +8,7 @@ db.sqlite3
 media/mapas
 media/reportes
 media/reportesQR
-ventas/pycache/
+ventas/__pycache__/
 
 # Environments 
 .env 
