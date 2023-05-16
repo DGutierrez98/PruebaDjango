@@ -63,7 +63,7 @@ class ProductosView(View):
         nombre = request.POST.get('name')
         descripcion = request.POST.get('descripcion')
         precio = request.POST.get('precio')
-        
+        print("hola")
         producto = Productos(nombre=nombre, descripcion=descripcion, precio=precio)
         producto.save()
 
