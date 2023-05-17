@@ -2,9 +2,10 @@ from itertools import product
 from re import template
 from urllib import response
 from django.shortcuts import render
-from .models import Productos
+from .models import Producto
 from django.http import JsonResponse
 from django.views import View
+from ventas.forms import ProductoForm
 
 def index(request):
     context={}
@@ -20,7 +21,7 @@ def editar_productos(request):
     nombre = request.POST.get('nombre')
     descripcion = request.POST.get('descripcion')
     precio = request.POST.get('precio')
-    producto = Productos.objects.get(pk=id)
+    producto = Producto.objects.get(pk=id)
         
     producto.nombre=nombre
     producto.descripcion=descripcion
@@ -40,7 +41,7 @@ def eliminar_producto(request):
 
     id = request.POST.get('id')
     
-    producto = Productos.objects.get(pk=id)
+    producto = Producto.objects.get(pk=id)
     producto.activo = False
     producto.save()
     response['id'] = producto.pk
@@ -53,21 +54,23 @@ class ProductosView(View):
     context={}
     template_name="ventas/productos.html"
     def get(self, request):
-        productos = Productos.objects.filter(activo=True)
+        productos = Producto.objects.filter(activo=True)
         self.context["productos"] = productos
+        self.context["formProductos"] = ProductoForm()
 
         return render(request, self.template_name, self.context)
 
     def post(self, request):
-        nombre = request.POST.get('name')
-        descripcion = request.POST.get('descripcion')
-        precio = request.POST.get('precio')
-        
-        producto = Productos(nombre=nombre, descripcion=descripcion, precio=precio)
-        producto.save()
+        formP = ProductoForm(request.POST)
+        if formP.is_valid():
+            try:
+                formP.save()
+            except Exception as e:
+                print(str(e))
 
-        productos = Productos.objects.filter(activo=True)
+        productos = Producto.objects.filter(activo=True)
         self.context["productos"] = productos
+        self.context["formProductos"] = ProductoForm()
 
 
         return render(request, self.template_name, self.context)
