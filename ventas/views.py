@@ -5,6 +5,7 @@ from django.shortcuts import render
 from .models import Producto
 from django.http import JsonResponse
 from django.views import View
+from ventas.forms import ProductoForm
 
 def index(request):
     context={}
@@ -55,20 +56,21 @@ class ProductosView(View):
     def get(self, request):
         productos = Producto.objects.filter(activo=True)
         self.context["productos"] = productos
+        self.context["formProductos"] = ProductoForm()
 
         return render(request, self.template_name, self.context)
 
     def post(self, request):
-        nombre = request.POST.get('nombresasda')
-        nombre = request.POST.get('name')
-        descripcion = request.POST.get('descripcion')
-        precio = request.POST.get('precio')
-        print("hola")
-        producto = Producto(nombre=nombre, descripcion=descripcion, precio=precio)
-        producto.save()
+        formP = ProductoForm(request.POST)
+        if formP.is_valid():
+            try:
+                formP.save()
+            except Exception as e:
+                print(str(e))
 
         productos = Producto.objects.filter(activo=True)
         self.context["productos"] = productos
+        self.context["formProductos"] = ProductoForm()
 
 
         return render(request, self.template_name, self.context)
