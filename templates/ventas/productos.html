@@ -20,6 +20,7 @@
                             <th>Nombre de Producto</th>
                             <th>Descripción</th>
                             <th>Precio</th>
+                            <th>Archivo</th>
                             <th>Acciones</th>
                         </tr>
                             {% if productos %}
@@ -28,6 +29,7 @@
                                         <td id="{{producto.id}}_nombre">{{ producto.nombre }}</td>
                                         <td id="{{producto.id}}_descripcion">{{ producto.descripcion }}</td>
                                         <td id="{{producto.id}}_precio">{{ producto.precio }}</td>
+                                        <td id="{{producto.id}}_archivo"><a href="">{{ producto.archivos.name }}</a></td>
                                         <td>
                                             <button class="btn btn-primary" onclick="editar({{producto.id}})"> Editar </button>
                                             <button class="btn btn-danger" onclick="eliminar({{producto.id}})"> Eliminar </button>
@@ -45,7 +47,7 @@
                 </div>
                 <hr>
                 <div class="col-12 mt-5">
-                    <form action="{% url 'productos' %}" method="POST" id="producto_form">
+                    <form action="{% url 'productos' %}" method="POST" id="producto_form" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="mb-3">
                             {{formProductos.nombre.label}}
